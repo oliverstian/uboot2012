@@ -167,6 +167,9 @@ ifeq ($(HOSTARCH),$(ARCH))
 CROSS_COMPILE ?=
 endif
 
+ARCH ?= arm
+CROSS_COMPILE ?= arm-linux-gnueabihf-
+
 # load other configuration
 include $(TOPDIR)/config.mk
 

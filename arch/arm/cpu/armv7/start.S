@@ -303,6 +303,24 @@ ENDPROC(relocate_code)
  * Don't save anything to stack even if compiled with -O0
  *
  *************************************************************************/
+/************************************************************************
+ENTRY(save_boot_params)
+	bx	lr
+extend as bolow(add by tzw 20211120)
+
+* .globl save_boot_params
+* ALIGN;
+* save_boot_params：
+* bx    lr
+
+ENDPROC(save_boot_params)
+	.weak	save_boot_params
+extend as bolow(add by tzw 20211120)
+
+* .type save_boot_params STT_FUNC;
+* .size save_boot_params, .-save_boot_params
+* .weak	save_boot_params
+*************************************************************************/
 ENTRY(save_boot_params)
 	bx	lr			@ back to my caller
 ENDPROC(save_boot_params)

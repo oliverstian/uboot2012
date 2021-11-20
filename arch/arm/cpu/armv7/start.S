@@ -124,14 +124,14 @@ IRQ_STACK_START_IN:
  */
 
 reset:
-	bl	save_boot_params
+	bl	save_boot_params  //啥没干
 	/*
 	 * set the cpu to SVC32 mode
 	 */
-	mrs	r0, cpsr
-	bic	r0, r0, #0x1f
-	orr	r0, r0, #0xd3
-	msr	cpsr,r0
+	mrs	r0, cpsr            //mrs状态寄存器和通用寄存器之间传送数据,读取cpsr到r0
+	bic	r0, r0, #0x1f       //bic将0x1f反码和r0相与，即把cpsr的M[4:0]清零
+	orr	r0, r0, #0xd3       //orr将r0中的值(cpsr)和0xd3(0x11010011)相或，即把cpsr设置为禁止IRQ和FIQ、ARM状态、SVC32模式
+	msr	cpsr,r0             //和mrs成对使用，一个是读cpsr，一个是写cpsr
 
 /*
  * Setup vector:
@@ -306,7 +306,7 @@ ENDPROC(relocate_code)
 /************************************************************************
 ENTRY(save_boot_params)
 	bx	lr
-extend as bolow(add by tzw 20211120)
+展开宏以后如下所示(add by tzw 20211120)
 
 * .globl save_boot_params
 * ALIGN;
@@ -315,10 +315,10 @@ extend as bolow(add by tzw 20211120)
 
 ENDPROC(save_boot_params)
 	.weak	save_boot_params
-extend as bolow(add by tzw 20211120)
+展开宏以后如下所示(add by tzw 20211120)
 
 * .type save_boot_params STT_FUNC;
-* .size save_boot_params, .-save_boot_params
+* .size save_boot_params, .-save_boot_params  (current addr - save_boot_params)
 * .weak	save_boot_params
 *************************************************************************/
 ENTRY(save_boot_params)

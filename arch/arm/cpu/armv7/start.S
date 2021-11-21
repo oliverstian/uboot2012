@@ -140,13 +140,16 @@ reset:
  */
 #if !(defined(CONFIG_OMAP44XX) && defined(CONFIG_SPL_BUILD))
 	/* Set V=0 in CP15 SCTRL register - for VBAR to point to vector */
+
+	//关于cp15的一些寄存器说明在armv7 reference manual的B3部分(VMSA)
+
 	mrc	p15, 0, r0, c1, c0, 0	@ Read CP15 SCTRL Register
-	bic	r0, #CR_V		@ V = 0
+	bic	r0, #CR_V		@ V = 0  //CR_V宏定义在arch/arm/include/asm/system.h。这句意思就是将CR_V位清零,异常向量表定位到0x000000000
 	mcr	p15, 0, r0, c1, c0, 0	@ Write CP15 SCTRL Register
 
 	/* Set vector address in CP15 VBAR register */
 	ldr	r0, =_start
-	mcr	p15, 0, r0, c12, c0, 0	@Set VBAR
+	mcr	p15, 0, r0, c12, c0, 0	@Set VBAR  //将任意地址设置为中断向量入口地址，这里就是把_start地址设置为中断向量入口地址
 #endif
 
 	/* the mask ROM code should have PLL and others stable */
@@ -334,6 +337,9 @@ ENDPROC(save_boot_params)
  * CONFIG_SYS_ICACHE_OFF is defined.
  *
  *************************************************************************/
+
+ //参考arm v7 reference manual，搜索Summary of VMSA CP15 register descriptions，有cp15的指令操作表
+
 ENTRY(cpu_init_cp15)
 	/*
 	 * Invalidate L1 I/D
